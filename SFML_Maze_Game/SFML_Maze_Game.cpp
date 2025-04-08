@@ -39,9 +39,10 @@ int maze[LY][LX] = { // это наш лабиринт, структура та 
 
 // переменные их консольной версии игры
 int score = 0; // счет игры
+int blinkCounter = 0; // Переменная для отслеживания мигания спрайта таймера
 
 int gameState = 0; // 0 - игра продолжается, 1 - выигрыш, 2 - закончилось время
-sf::Time timeLimit = sf::milliseconds(90000); // лимит игры в миллисекундах
+sf::Time timeLimit = sf::milliseconds(17000); // лимит игры в миллисекундах
 sf::Time gameTime; // оставшееся время
 sf::Time elapsedTime; // счетчик прошедшего времени
 sf::Clock gameClock; // таймер
@@ -138,12 +139,23 @@ sf::Text dashboardText;
 sf::Font dashboardFont;
 string dashboardTextFile = "assets\\fonts\\Grotesque-Bourgeoisie.ttf";
 
+// Объект "Бриллиант блеск"
+sf::Texture diamond2Texture;
+sf::Sprite diamond2Sprite;
+string diamond2Image = "assets\\bitmaps\\diamond2.png";
+
+// Объект "Анимация песочных часов"
+sf::Texture Time2Texture;
+sf::Sprite Time2Sprite;
+string Time2Image = "assets\\bitmaps\\Time+2.png";
+
 
 
 void UpdateScore(int score)
 {
     dashboardText.setString(to_string(score)); // устанавливаем текст для вывода to_string переводит число в строковое представление
     dashboardText.setPosition(scoreTextPosition); // устанавливаем позицию текста для счета
+    dashboardText.setFillColor(sf::Color(255, 255, 35)); // Устанавливаем желтый цвет текста для счета
     window.draw(dashboardText); // отрисовываем текст в буфере кадра
 }
 
@@ -161,6 +173,15 @@ void UpdateClock(sf::Time elapsed)
     else
     {   // если время осталось
         dashboardText.setPosition(timeTextPosition); // устанавливаем позицию текста для счета
+        // настраиваем цвет отображаемого времени 
+        if (gameTime.asSeconds() > 16) // если больше 15 секунд
+        {
+            dashboardText.setFillColor(sf::Color(144, 238, 144)); // светло-зеленый
+        }
+        else // если 15 секунд и меньше
+        {
+            dashboardText.setFillColor(sf::Color::Red); // красный
+        }
         // устанавливаем текст для вывода to_string переводит число в строковое представление
         // для получения времени в секундах используем функцию asSeconds. Она возвращает float
         // поэтому явно преобразуем ее в int, иначе возможны десятичные дроби при выводе оставшегося времени
@@ -180,6 +201,7 @@ void PrepareBackgroundImage(string imageFileName)
 //Функция загрузки спрайтов индикаторов игры
 void PrepareDashboardImage(string scoreImageFileName, string timerImageFileName)
 {
+
     scoreTexture.loadFromFile(scoreImageFileName); // загружаем текстуру
     scoreSprite.setTexture(scoreTexture); // натягиваем ее на спрайт
 
@@ -194,7 +216,7 @@ void PrepareDashboardImage(string scoreImageFileName, string timerImageFileName)
     unsigned int timerXPos = wSize.x / 2 + 3 * sprSize;
     // устанавливаем позиции спрайтов
     scoreSprite.setPosition(sf::Vector2f(scoreXPos, scoreYPos));
-    timerSprite.setPosition(sf::Vector2f(timerXPos, scoreYPos));
+    timerSprite.setPosition(sf::Vector2f(timerXPos, scoreYPos));       
     // Вычисляем позицию текста для счета игры = позицияХ_спрайта + размер спрайта + отступ
     scoreTextPosition.x = scoreXPos + dashboardSprSize + 10;
     scoreTextPosition.y = scoreYPos - 15;
@@ -218,7 +240,7 @@ void PrepareFonts(string headerFontName, string dashboardFontName)
     dashboardText.setFont(dashboardFont);// устанавливаем шрифт для текста
     dashboardText.setCharacterSize(45);// устанавливаем размер символов
     dashboardText.setString("0");// задаем строку текста для отображения
-    dashboardText.setFillColor(sf::Color(255, 255, 35)); // Устанавливаем светло-желтый цвет текста
+    //dashboardText.setFillColor(sf::Color(255, 255, 35)); // Устанавливаем светло-желтый цвет текста
     dashboardText.setStyle(sf::Text::Bold | sf::Text::Italic);// делаем шрифт жирным и курсивом, используя битовое И
     // Центрирование заголовка. Получаем размеры окна игры
     sf::Vector2u wSize = window.getSize();
@@ -252,7 +274,27 @@ void RedrawMaze(int maze[LY][LX], int width, int height)
             // на размер спрайта по вертикали
             sprites[index].setPosition(sf::Vector2f(xMaze + i * sprSize, yMaze + j * sprSize));
             // отрисовываем спрайт
-            if (index > 0) window.draw(sprites[index]);
+            if (index > 0)
+            {
+                if (index == 5 && blinkCounter % 14 < 7) //мигание алмаза
+                {
+                    diamond2Texture.loadFromFile(diamond2Image); // загружаем текстуру
+                    diamond2Sprite.setTexture(diamond2Texture); // натягиваем ее на спрайт
+                    diamond2Sprite.setPosition(xMaze + i * sprSize, yMaze + j * sprSize);
+                    window.draw(diamond2Sprite);
+                }
+                else if (index == 6 && blinkCounter % 10 < 5) //анимация песчаных часов
+                {
+                    Time2Texture.loadFromFile(Time2Image); // загружаем текстуру
+                    Time2Sprite.setTexture(Time2Texture); // натягиваем ее на спрайт
+                    Time2Sprite.setPosition(xMaze + i * sprSize, yMaze + j * sprSize);
+                    window.draw(Time2Sprite);
+                }
+                else
+                {
+                    window.draw(sprites[index]);
+                }                
+            }
         }
     }
 }
@@ -330,13 +372,28 @@ void HandleKeyboardEvents() // Обрабатываем события клав�
     }
 }
 
+
+
 void RenderScene()
-{
+{    
+    blinkCounter++; // Увеличиваем счетчик для мигания
     window.draw(backgroundSprite);  // отрисовываем спрайт с фоновым изображением в буфере кадра
     RedrawMaze(maze, LX, LY); // отрисовка лабиринта
     window.draw(headerText); // Выводим заголовок игры
-    window.draw(scoreSprite); // Выводим спрайт счета
-    window.draw(timerSprite); // Выводим спрайт времени
+    window.draw(scoreSprite); // Выводим спрайт счета       
+    // Логика для мигания спрайта песочных часов
+    if (gameTime.asSeconds() <= 16)
+    {
+        
+        if (blinkCounter % 10 < 5) // Мигаем спрайтом
+        {
+            window.draw(timerSprite); // Отрисовываем спрайт времени
+        }
+    }
+    else
+    {
+        window.draw(timerSprite); // Отрисовываем спрайт времени, если время больше 15 секунд
+    }
     UpdateScore(score); // обновляем текст счета
     UpdateClock(gameClock.getElapsedTime()); // обновляем оставшееся время игры
 }

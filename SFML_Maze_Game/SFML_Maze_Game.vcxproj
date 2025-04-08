@@ -150,6 +150,7 @@
   <ItemGroup>
     <Image Include="assets\background\background.jpg" />
     <Image Include="assets\bitmaps\diamond.png" />
+    <Image Include="assets\bitmaps\diamond2.png" />
     <Image Include="assets\bitmaps\Door.bmp">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
@@ -163,6 +164,7 @@
     <Image Include="assets\bitmaps\money.png" />
     <Image Include="assets\bitmaps\score.png" />
     <Image Include="assets\bitmaps\Time+.png" />
+    <Image Include="assets\bitmaps\Time+2.png" />
     <Image Include="assets\bitmaps\timer.png" />
     <Image Include="assets\bitmaps\wall.bmp" />
   </ItemGroup>
