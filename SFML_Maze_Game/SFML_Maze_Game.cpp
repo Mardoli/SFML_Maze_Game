@@ -9,39 +9,40 @@ const int LY = 23; // размер лабиринта по вертикали
 const int LX = 28; // размер лабиринта по горизонтали
 const int sprSize = 24; // размер спрайта в пикселах
 const int dashboardSprSize = 48; // размер спрайтов информационных сообщений
-const int spritesCount = 5; //Количество спрайтов
+const int spritesCount = 10; //Количество спрайтов
 
 int maze[LY][LX] = { // это наш лабиринт, структура та же
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
     {1,0,0,0,0,1,4,4,0,0,0,1,0,0,0,0,0,0,0,0,0,1,4,0,0,0,4,1},
-    {1,0,0,1,0,1,1,1,1,1,0,1,0,1,0,1,1,1,0,1,0,1,0,1,1,1,0,1},
-    {1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1,4,0,0,1,0,1,4,0,0,1,0,1},
+    {1,0,0,1,7,1,1,1,1,1,0,1,0,1,0,1,1,1,0,1,0,1,0,1,1,1,0,1},
+    {1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1,4,6,0,1,0,1,4,0,0,1,0,1},
     {1,0,0,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1,0,1},
     {2,4,4,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1,0,0,0,0,0,1},
-    {1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1},
-    {1,0,4,0,0,0,0,0,0,1,4,4,0,1,0,0,0,1,0,0,0,1,0,0,4,1,0,1},
-    {1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,0,1,0,1,1,1,1,1,4,1,0,1},
+    {1,1,1,1,0,1,1,1,1,1,1,1,8,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1},
+    {1,0,4,0,0,0,0,0,0,1,4,5,8,1,0,0,0,1,0,0,0,1,0,8,4,1,0,1},
+    {1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,0,1,0,1,1,1,1,1,5,1,0,1},
     {1,4,4,1,0,0,0,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,4,1,0,1},
-    {1,0,0,1,0,1,1,1,1,1,0,0,1,1,1,1,0,1,1,1,1,1,0,1,1,1,0,1},
-    {1,0,0,1,0,0,0,1,0,0,0,0,0,4,0,0,0,0,0,0,4,0,0,0,0,1,0,1},
+    {1,0,8,1,0,1,1,1,1,1,0,0,1,1,1,1,0,1,1,1,1,1,0,1,1,1,0,1},
+    {1,0,7,1,0,0,0,1,0,0,0,0,0,4,0,0,0,0,0,0,4,0,0,0,0,1,0,1},
     {1,0,0,1,1,1,0,1,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1},
     {1,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1},
     {1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1},
-    {1,0,0,0,0,0,0,1,4,0,4,1,4,0,4,1,0,0,0,1,1,1,0,0,0,1,0,1},
-    {1,0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,0,1,0,1,0,1},
+    {1,0,7,0,0,0,0,1,4,0,4,1,4,0,4,1,0,0,0,1,1,1,0,0,0,1,0,1},
+    {1,0,8,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,0,1,0,1,0,1},
     {1,0,0,1,0,1,0,0,0,1,0,1,0,1,0,1,0,4,4,1,0,0,0,1,0,1,0,1},
     {1,1,0,1,0,1,1,1,1,1,0,1,0,1,0,1,0,1,1,1,0,1,1,1,0,1,0,1},
-    {1,4,0,1,0,1,4,4,4,1,0,0,0,1,0,1,0,1,0,0,0,1,0,0,0,1,0,1},
+    {1,5,0,1,0,1,4,5,4,1,0,0,0,1,0,1,0,1,0,0,0,1,0,0,0,1,0,1},
     {1,1,1,1,0,1,0,1,1,1,1,0,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1},
-    {1,4,0,0,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,4,0,0,0,0,0,3,1},
+    {1,6,0,0,4,1,0,8,8,8,0,0,0,0,0,0,0,0,0,1,4,7,8,0,0,0,3,1},
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 };
 
 // переменные их консольной версии игры
 int score = 0; // счет игры
+int blinkCounter = 0; // Переменная для отслеживания мигания спрайта таймера
 
 int gameState = 0; // 0 - игра продолжается, 1 - выигрыш, 2 - закончилось время
-sf::Time timeLimit = sf::milliseconds(90000); // лимит игры в миллисекундах
+sf::Time timeLimit = sf::milliseconds(17000); // лимит игры в миллисекундах
 sf::Time gameTime; // оставшееся время
 sf::Time elapsedTime; // счетчик прошедшего времени
 sf::Clock gameClock; // таймер
@@ -106,7 +107,11 @@ std::string textureNames[spritesCount]{  // объявляем массив ст
     "assets\\bitmaps\\wall.bmp",
     "assets\\bitmaps\\door.bmp",
     "assets\\bitmaps\\man.png",
-    "assets\\bitmaps\\money.png"
+    "assets\\bitmaps\\money.png",
+    "assets\\bitmaps\\diamond.png",
+    "assets\\bitmaps\\Time+.png",
+    "assets\\bitmaps\\Mine.png",
+    "assets\\bitmaps\\Mine.png"
 };
 
 // Объекты фонового изображения
@@ -134,10 +139,23 @@ sf::Text dashboardText;
 sf::Font dashboardFont;
 string dashboardTextFile = "assets\\fonts\\Grotesque-Bourgeoisie.ttf";
 
+// Объект "Бриллиант блеск"
+sf::Texture diamond2Texture;
+sf::Sprite diamond2Sprite;
+string diamond2Image = "assets\\bitmaps\\diamond2.png";
+
+// Объект "Анимация песочных часов"
+sf::Texture Time2Texture;
+sf::Sprite Time2Sprite;
+string Time2Image = "assets\\bitmaps\\Time+2.png";
+
+
+
 void UpdateScore(int score)
 {
     dashboardText.setString(to_string(score)); // устанавливаем текст для вывода to_string переводит число в строковое представление
     dashboardText.setPosition(scoreTextPosition); // устанавливаем позицию текста для счета
+    dashboardText.setFillColor(sf::Color(255, 255, 35)); // Устанавливаем желтый цвет текста для счета
     window.draw(dashboardText); // отрисовываем текст в буфере кадра
 }
 
@@ -155,6 +173,15 @@ void UpdateClock(sf::Time elapsed)
     else
     {   // если время осталось
         dashboardText.setPosition(timeTextPosition); // устанавливаем позицию текста для счета
+        // настраиваем цвет отображаемого времени 
+        if (gameTime.asSeconds() > 16) // если больше 15 секунд
+        {
+            dashboardText.setFillColor(sf::Color(144, 238, 144)); // светло-зеленый
+        }
+        else // если 15 секунд и меньше
+        {
+            dashboardText.setFillColor(sf::Color::Red); // красный
+        }
         // устанавливаем текст для вывода to_string переводит число в строковое представление
         // для получения времени в секундах используем функцию asSeconds. Она возвращает float
         // поэтому явно преобразуем ее в int, иначе возможны десятичные дроби при выводе оставшегося времени
@@ -174,6 +201,7 @@ void PrepareBackgroundImage(string imageFileName)
 //Функция загрузки спрайтов индикаторов игры
 void PrepareDashboardImage(string scoreImageFileName, string timerImageFileName)
 {
+
     scoreTexture.loadFromFile(scoreImageFileName); // загружаем текстуру
     scoreSprite.setTexture(scoreTexture); // натягиваем ее на спрайт
 
@@ -188,7 +216,7 @@ void PrepareDashboardImage(string scoreImageFileName, string timerImageFileName)
     unsigned int timerXPos = wSize.x / 2 + 3 * sprSize;
     // устанавливаем позиции спрайтов
     scoreSprite.setPosition(sf::Vector2f(scoreXPos, scoreYPos));
-    timerSprite.setPosition(sf::Vector2f(timerXPos, scoreYPos));
+    timerSprite.setPosition(sf::Vector2f(timerXPos, scoreYPos));       
     // Вычисляем позицию текста для счета игры = позицияХ_спрайта + размер спрайта + отступ
     scoreTextPosition.x = scoreXPos + dashboardSprSize + 10;
     scoreTextPosition.y = scoreYPos - 15;
@@ -212,7 +240,7 @@ void PrepareFonts(string headerFontName, string dashboardFontName)
     dashboardText.setFont(dashboardFont);// устанавливаем шрифт для текста
     dashboardText.setCharacterSize(45);// устанавливаем размер символов
     dashboardText.setString("0");// задаем строку текста для отображения
-    dashboardText.setFillColor(sf::Color(255, 255, 35)); // Устанавливаем светло-желтый цвет текста
+    //dashboardText.setFillColor(sf::Color(255, 255, 35)); // Устанавливаем светло-желтый цвет текста
     dashboardText.setStyle(sf::Text::Bold | sf::Text::Italic);// делаем шрифт жирным и курсивом, используя битовое И
     // Центрирование заголовка. Получаем размеры окна игры
     sf::Vector2u wSize = window.getSize();
@@ -246,7 +274,27 @@ void RedrawMaze(int maze[LY][LX], int width, int height)
             // на размер спрайта по вертикали
             sprites[index].setPosition(sf::Vector2f(xMaze + i * sprSize, yMaze + j * sprSize));
             // отрисовываем спрайт
-            if (index > 0) window.draw(sprites[index]);
+            if (index > 0)
+            {
+                if (index == 5 && blinkCounter % 14 < 7) //мигание алмаза
+                {
+                    diamond2Texture.loadFromFile(diamond2Image); // загружаем текстуру
+                    diamond2Sprite.setTexture(diamond2Texture); // натягиваем ее на спрайт
+                    diamond2Sprite.setPosition(xMaze + i * sprSize, yMaze + j * sprSize);
+                    window.draw(diamond2Sprite);
+                }
+                else if (index == 6 && blinkCounter % 10 < 5) //анимация песчаных часов
+                {
+                    Time2Texture.loadFromFile(Time2Image); // загружаем текстуру
+                    Time2Sprite.setTexture(Time2Texture); // натягиваем ее на спрайт
+                    Time2Sprite.setPosition(xMaze + i * sprSize, yMaze + j * sprSize);
+                    window.draw(Time2Sprite);
+                }
+                else
+                {
+                    window.draw(sprites[index]);
+                }                
+            }
         }
     }
 }
@@ -262,6 +310,7 @@ void PrepareSpriteTexture(std::string names[spritesCount], int count = spritesCo
         sprites[i].setTexture(textures[i]); // натягиваем текстуру на спрайт
     }
 }
+
 
 // перемещает игрока из текущей позиции на dx клеток по горизонтали
 // и dy клеток по вертикали
@@ -284,6 +333,18 @@ void Move(int dx, int dy)
             case 4: // если монета - добавляем 100 бонусов
                 score += 100; // увеличиваем бонусы
                 break;
+            case 5: // если алмаз - добавляем 300 бонусов
+                score += 300;
+                break;
+            case 6: // песочные часы - дополнительные 10с
+                timeLimit += sf::seconds(10);
+                break;
+            case 7: // мина - минус 200 очков
+                score -= 200;
+                break;
+            case 8: // мина - минус 8 секунд
+                timeLimit -= sf::seconds(8);
+                break;            
             }
             maze[playerPos.y][playerPos.x] = 3; // записываем игрока в новую позицию лабиринта
         }
@@ -311,13 +372,28 @@ void HandleKeyboardEvents() // Обрабатываем события клав�
     }
 }
 
+
+
 void RenderScene()
-{
+{    
+    blinkCounter++; // Увеличиваем счетчик для мигания
     window.draw(backgroundSprite);  // отрисовываем спрайт с фоновым изображением в буфере кадра
     RedrawMaze(maze, LX, LY); // отрисовка лабиринта
     window.draw(headerText); // Выводим заголовок игры
-    window.draw(scoreSprite); // Выводим спрайт счета
-    window.draw(timerSprite); // Выводим спрайт времени
+    window.draw(scoreSprite); // Выводим спрайт счета       
+    // Логика для мигания спрайта песочных часов
+    if (gameTime.asSeconds() <= 16)
+    {
+        
+        if (blinkCounter % 10 < 5) // Мигаем спрайтом
+        {
+            window.draw(timerSprite); // Отрисовываем спрайт времени
+        }
+    }
+    else
+    {
+        window.draw(timerSprite); // Отрисовываем спрайт времени, если время больше 15 секунд
+    }
     UpdateScore(score); // обновляем текст счета
     UpdateClock(gameClock.getElapsedTime()); // обновляем оставшееся время игры
 }
@@ -408,7 +484,7 @@ void ShowMessageWindow(RenderWindow& mainWindow)
 
 int main()
 {
-    PrepareSpriteTexture(textureNames, 5); // подготавливаем спрайты лабиринта
+    PrepareSpriteTexture(textureNames, 9); // подготавливаем спрайты лабиринта
     PrepareBackgroundImage(backgroundImage); // готовим спрайт фона
     PrepareDashboardImage(scoreImage, timerImage); // готовим спрайты индикаторов игры
     PrepareFonts(headerTextFile, dashboardTextFile); // готовим текст для вывода времени и счета
